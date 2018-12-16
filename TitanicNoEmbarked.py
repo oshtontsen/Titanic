@@ -22,13 +22,12 @@ y= titanic_data.Survived
 
 #CHANGE features
 features = ['Age', 'Fare', 'IsMale', 'IsFemale', 'Is1stClass', 'Is2ndClass', 
-            'Is3rdClass', 'EmbarkSouthampton', 'EmbarkCherbourg', 
-            'EmbarkQueenstown', 'IsAlone', 'IsChild']
+            'Is3rdClass', 'IsAlone', 'IsChild']
 X = titanic_data[features]
 
 train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=1)
 my_pipeline = make_pipeline(SimpleImputer(), XGBClassifier(n_estimators = 1000, n_early_stopping_rounds = 5, 
-                            learning_rate = .05, n_jobs = 4))
+                            learning_rate = .02, n_jobs = 4))
 my_pipeline.fit(train_X, train_y)
 predictions = my_pipeline.predict(val_X)
 scores = cross_val_score(my_pipeline, X, y, cv = 5, scoring = 'neg_mean_absolute_error')
@@ -43,4 +42,4 @@ test_X = titanic_test_data[features]
 test_predictions = my_pipeline.predict(test_X)
 print(test_predictions)
 df=pd.concat([titanic_test_data, pd.DataFrame(test_predictions)],axis=1)
-df.to_csv('solution.csv', index=False)
+df.to_csv('noembarkedsolution.csv', index=False)
